@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyMood 🌤️</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <i class="fas fa-cloud-sun"></i>
+            <span>SkyMood</span>
+        </div>
+        
+        <div class="nav-controls">
+            <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">
+                <i class="fas fa-moon"></i>
+            </button>
+
+            <button class="unit-toggle" id="unitToggle" title="Toggle °C/°F">
+                °C
+            </button>
+            
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-dropdown">
+                    <p id="userName">Guest User</p>
+                    <small>Weather Enthusiast</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="main">
+
+    <!-- SEARCH BAR -->
+    <div class="search-section">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Cari kota..." autocomplete="off">
+            <button id="geolocateBtn" title="Gunakan Lokasi Saya">
+                <i class="fas fa-location-dot"></i>
+            </button>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <!-- LOADING -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Mengambil data cuaca...</p>
+    </div>
+
+    <!-- TOP - WEATHER DISPLAY -->
+    <div class="weather-section">
+        <div class="weather-container">
+            <div class="top">
+                <div class="weather-icon-large" id="weatherIconLarge">🌤️</div>
+                <h1 id="cityName">Jakarta</h1>
+                <h2 id="temp">--°C</h2>
+                <p id="desc">--</p>
+                <p id="feelsLike" class="feels-like">Terasa seperti --°C</p>
+            </div>
+
+            <!-- INFO CARDS -->
+            <div class="cards">
+                <div class="box">
+                    <p>🌬️ Angin</p>
+                    <h3 id="wind">-</h3>
+                    <small id="windDir">-</small>
+                </div>
+                <div class="box">
+                    <p>💧 Kelembaban</p>
+                    <h3 id="humidity">-</h3>
+                </div>
+                <div class="box">
+                    <p>☁️ Status</p>
+                    <h3 id="status">-</h3>
+                </div>
+                <div class="box">
+                    <p>👁️ Visibilitas</p>
+                    <h3 id="visibility">-</h3>
+                </div>
+                <div class="box">
+                    <p>🌡️ Tekanan</p>
+                    <h3 id="pressure">-</h3>
+                </div>
+                <div class="box">
+                    <p>☀️ UV Index</p>
+                    <h3 id="uvIndex">-</h3>
+                </div>
+                <div class="box">
+                    <p>🌅 Terbit</p>
+                    <h3 id="sunrise">-</h3>
+                </div>
+                <div class="box">
+                    <p>🌇 Terbenam</p>
+                    <h3 id="sunset">-</h3>
+                </div>
+            </div>
+
+            <!-- CONTROL -->
+            <div class="control">
+                <select id="city">
+                    <option value="-6.2,106.8|Jakarta">Jakarta</option>
+                    <option value="0.53,101.45|Pekanbaru">Pekanbaru</option>
+                    <option value="35.6,139.6|Tokyo">Tokyo</option>
+                    <option value="-33.87,151.21|Sydney">Sydney</option>
+                    <option value="48.86,2.35|Paris">Paris</option>
+                </select>
+                <button onclick="getWeatherFromSelect()">Cari</button>
+                <button class="favorite-btn" id="favoriteBtn" title="Tambah ke Favorit">
+                    <i class="far fa-heart"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAVORITES SECTION -->
+    <div class="favorites-section" id="favoritesSection">
+        <div class="favorites-container">
+            <h3>⭐ Kota Favorit</h3>
+            <div class="favorites-list" id="favoritesList"></div>
+        </div>
+    </div>
+
+    <!-- RECENT CITIES SECTION -->
+    <div class="recent-section" id="recentSection">
+        <div class="recent-container">
+            <h3>🕐 Riwayat Pencarian</h3>
+            <div class="recent-list" id="recentList"></div>
+        </div>
+    </div>
+
+    <!-- HOURLY FORECAST -->
+    <div class="forecast-section">
+        <div class="forecast-container">
+            <h3>📊 Prakiraan Per Jam</h3>
+            <div class="forecast" id="forecast"></div>
+        </div>
+    </div>
+
+    <!-- WEEKLY FORECAST -->
+    <div class="weekly-section">
+        <div class="weekly-container">
+            <h3>📅 Prakiraan 7 Hari</h3>
+            <div class="weekly-forecast" id="weeklyForecast"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>SkyMood</h4>
+            <p>Aplikasi cuaca real-time untuk membantu Anda merencanakan hari</p>
+        </div>
+        <div class="footer-section">
+            <h4>Fitur</h4>
+            <ul>
+                <li><a href="#" onclick="return false;">Cuaca Saat Ini</a></li>
+                <li><a href="#" onclick="return false;">Prakiraan Cuaca</a></li>
+                <li><a href="#" onclick="return false;">Lokasi Terdekat</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Kontak</h4>
+            <p>Email: info@skymood.com</p>
+            <p>Follow us on</p>
+            <div class="social-links">
+                <a href="#" onclick="return false;"><i class="fab fa-twitter"></i></a>
+                <a href="#" onclick="return false;"><i class="fab fa-facebook"></i></a>
+                <a href="#" onclick="return false;"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 SkyMood Weather. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
